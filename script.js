@@ -9,7 +9,7 @@ function obtenerPartidaActiva(){
 
 return {
 
-id:"PG-2026-001",
+id:"PG-2026-03",
 
 precio:5
 
@@ -65,12 +65,14 @@ document
 function limpiar(){
 
 document.getElementById("playerName").value="";
-
 document.getElementById("numCards").value=1;
-
 document.getElementById("cards").innerHTML="";
-
 document.getElementById("paymentPanel").classList.add("hidden");
+
+// 🔥 REACTIVAR BOTÓN
+const btn = document.getElementById("btnGenerar");
+btn.disabled = false;
+btn.innerText = "Ya pagué, generar cartillas";
 
 }
 
@@ -99,6 +101,12 @@ setTimeout(() => {
 
 // cambiar texto final
 btn.innerText="Cartillas generadas ✔";
+
+// 🔥 RESTAURAR BOTÓN AUTOMÁTICAMENTE
+setTimeout(() => {
+  btn.disabled = false;
+  btn.innerText = "Ya pagué, generar cartillas";
+}, cantidad * 500 + 1000);
 
 }
 
