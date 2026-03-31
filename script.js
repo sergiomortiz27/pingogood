@@ -179,18 +179,17 @@ guardar(nombre,partida,code,card);
 //envio de data
 function guardar(nombre,partida,code,card){
 
-const formData = new FormData();
+const data = new URLSearchParams();
 
-formData.append("nombre", nombre);
-formData.append("partida", partida);
-formData.append("codigo", code);
-formData.append("cartilla", JSON.stringify(card));
-formData.append("estado", "PAGADO");
+data.append("nombre", nombre);
+data.append("partida", partida);
+data.append("codigo", code);
+data.append("cartilla", JSON.stringify(card));
+data.append("estado", "PAGADO");
 
 fetch(scriptURL, {
 method: "POST",
-mode: "no-cors", // 👈 IMPORTANTE
-body: formData
+body: data
 })
 .then(() => console.log("enviado"))
 .catch(err => console.error(err));
