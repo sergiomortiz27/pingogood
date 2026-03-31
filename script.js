@@ -224,7 +224,11 @@ addField("estado", "PAGADO");
 
 document.body.appendChild(form);
 form.submit();
+
+// 🔥 CAMBIO AQUÍ (esperar antes de borrar)
+setTimeout(() => {
 document.body.removeChild(form);
+}, 2000);
 
 }
 
