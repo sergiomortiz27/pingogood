@@ -182,27 +182,22 @@ fetch(scriptURL,{
 
 method:"POST",
 
-mode:"no-cors",
-
 headers:{
 "Content-Type":"application/json"
 },
 
 body:JSON.stringify({
-
 nombre:nombre,
 partida:partida,
 codigo:code,
 cartilla:card,
 estado:"PAGADO"
-
 })
 
 })
-
-.then(()=>console.log("guardado"))
-
-.catch(err=>console.log(err));
+.then(res => res.text())
+.then(data => console.log("respuesta:", data))
+.catch(err => console.error("error:", err));
 
 }
 
