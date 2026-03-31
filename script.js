@@ -176,7 +176,9 @@ guardar(nombre,partida,code,card);
 
 
 
-//envio de data
+//envio de data 
+/* Error Fecth
+
 function guardar(nombre,partida,code,card){
 
 const data = new URLSearchParams();
@@ -196,6 +198,35 @@ body: data
 
 }
 
+ */
+
+function guardar(nombre,partida,code,card){
+
+const form = document.createElement("form");
+
+form.method = "POST";
+form.action = scriptURL;
+form.target = "hidden_iframe";
+
+function addField(name, value){
+const input = document.createElement("input");
+input.type = "hidden";
+input.name = name;
+input.value = value;
+form.appendChild(input);
+}
+
+addField("nombre", nombre);
+addField("partida", partida);
+addField("codigo", code);
+addField("cartilla", JSON.stringify(card));
+addField("estado", "PAGADO");
+
+document.body.appendChild(form);
+form.submit();
+document.body.removeChild(form);
+
+}
 
 
 
