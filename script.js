@@ -189,11 +189,11 @@ formData.append("estado", "PAGADO");
 
 fetch(scriptURL, {
 method: "POST",
+mode: "no-cors", // 👈 IMPORTANTE
 body: formData
 })
-.then(res => res.text())
-.then(data => console.log("respuesta:", data))
-.catch(err => console.error("error:", err));
+.then(() => console.log("enviado"))
+.catch(err => console.error(err));
 
 }
 
