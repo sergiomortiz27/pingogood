@@ -92,9 +92,9 @@ let nombre=document.getElementById("playerName").value;
 let cantidad=document.getElementById("numCards").value;
 
 for(let i=0;i<cantidad;i++){
-
-crearCartilla(nombre);
-
+setTimeout(() => {
+    crearCartilla(nombre);
+  }, i * 500); // 🔥 delay de 0.5s entre envíos
 }
 
 // cambiar texto final
@@ -225,7 +225,12 @@ addField("estado", "PAGADO");
 document.body.appendChild(form);
 form.submit();
 
-// 🔥 CAMBIO AQUÍ (esperar antes de borrar)
+// ⏱️ limpiar iframe (evita error 403 visible)
+setTimeout(() => {
+document.querySelector('iframe[name="hidden_iframe"]').src = "about:blank";
+}, 1500);
+
+// ⏱️ eliminar form después (no antes)
 setTimeout(() => {
 document.body.removeChild(form);
 }, 2000);
