@@ -175,31 +175,29 @@ guardar(nombre,partida,code,card);
 }
 
 
+
 //envio de data
 function guardar(nombre,partida,code,card){
 
-fetch(scriptURL,{
+const formData = new FormData();
 
-method:"POST",
+formData.append("nombre", nombre);
+formData.append("partida", partida);
+formData.append("codigo", code);
+formData.append("cartilla", JSON.stringify(card));
+formData.append("estado", "PAGADO");
 
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-nombre:nombre,
-partida:partida,
-codigo:code,
-cartilla:card,
-estado:"PAGADO"
-})
-
+fetch(scriptURL, {
+method: "POST",
+body: formData
 })
 .then(res => res.text())
 .then(data => console.log("respuesta:", data))
 .catch(err => console.error("error:", err));
 
 }
+
+
 
 
 function generarCodigo(partida){
