@@ -1,4 +1,3 @@
-
 const scriptURL="https://script.google.com/macros/s/AKfycbwHMSoz1v8yzpkY-2W1IL8wNq-CFb_psYDib7nNkpQMUiXzsEH94xtUzx4SMGsfPxO_/exec";
 
 
@@ -183,21 +182,27 @@ fetch(scriptURL,{
 
 method:"POST",
 
+mode:"no-cors",
+
+headers:{
+"Content-Type":"application/json"
+},
+
 body:JSON.stringify({
 
 nombre:nombre,
-
 partida:partida,
-
 codigo:code,
-
 cartilla:card,
-
 estado:"PAGADO"
 
 })
 
-});
+})
+
+.then(()=>console.log("guardado"))
+
+.catch(err=>console.log(err));
 
 }
 
