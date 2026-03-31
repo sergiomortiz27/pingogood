@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Bingo</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="admin.js"></script>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+<h1>Panel Administrador Bingo</h1>
+
+<div class="controls">
+
+<button onclick="iniciarPartida()">
+Iniciar partida
+</button>
+
+<button onclick="cantarNumero()">
+Cantar número
+</button>
+
+<button onclick="reiniciarNumeros()">
+Reiniciar
+</button>
+
+</div>
+
+
+<h2>Último número</h2>
+
+<div id="ultimoNumero" class="bigNumber">
+-
+</div>
+
+
+<h2>Tablero</h2>
+
+<div id="tablero" class="tablero"></div>
+
+</div>
+
+</body>
+
+</html>
