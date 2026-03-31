@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PINGOGoog</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="script.js"></script>
+</head>
+
+
+
+<body>
+
+<div class="container">
+
+<header>
+
+<h1 class="logo">
+    <img src="img/pingogood.svg" alt="PINGOGoog">
+</h1>
+
+<p class="message">
+¡No solo miren el viaje, juéguenlo con nosotros! 🍱  
+Adquieran su Bingo Oficial y pongan al Pelao en aprietos.⛩️💥
+</p>
+
+</header>
+
+
+
+<div class="panel">
+
+<label>Nombre del jugador</label>
+
+<input type="text" id="playerName">
+
+
+<label>Cantidad de cartillas</label>
+
+<input type="number" id="numCards" value="1" min="1" max="50">
+
+
+<div class="buttons">
+
+<button onclick="mostrarPago()">
+
+Generar
+
+</button>
+
+
+<button onclick="limpiar()">
+
+Limpiar
+
+</button>
+
+
+</div>
+
+</div>
+
+
+
+<div id="paymentPanel" class="hidden">
+
+<h2>Pago por Yape</h2>
+
+<img src="assets/qr-yape.png" class="qr">
+
+
+<p>Número Yape</p>
+<h3>999 999 999</h3>
+
+
+<p>Nombre</p>
+<h3>TODO Good</h3>
+
+
+<p>Monto a pagar</p>
+
+<h2 id="montoTotal">
+
+S/ 0
+
+</h2>
+
+
+<p id="detallePago"></p>
+
+
+<button id="btnGenerar" onclick="generarCartillas(this)">
+Ya pagué, generar cartillas
+</button>
+
+</div>
+
+
+
+<div id="cards"></div>
+
+
+
+<footer>
+
+<p>
+
+© 2026 PINGOGoog  
+<br>
+
+Bingo Premium Online  
+<br>
+
+play • win • enjoy
+
+</p>
+
+</footer>
+
+
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
