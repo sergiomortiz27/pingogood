@@ -119,3 +119,7 @@
   background:gold;
   color:black;
 }
+
+.bola{
+  cursor: pointer;
+}
