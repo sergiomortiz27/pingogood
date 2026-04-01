@@ -1,281 +1,293 @@
-let numerosDisponibles=[];
-let numerosCantados=[];
+let modo = "manual";
+let numeros = [];
+let usados = [];
 
 
-// seguridad básica
-let clave="1234";
+// 🔀 cambiar modo
+function setModo(m){
+  modo = m;
+  alert("Modo: " + m);
+}
 
-let acceso=prompt("Clave admin");
 
-if(acceso!==clave){
+// ▶️ iniciar juego
+function iniciarJuego(){
+  crearTablero();
 
-document.body.innerHTML="Acceso denegado";
+  numeros = Array.from({length:75}, (_,i)=>i+1);
+  usados = [];
+
+  document.getElementById("bigNumber").innerText = "--";
+
+  document.querySelectorAll(".bola").forEach(b=>{
+    b.classList.remove("activo");
+  });
+
+
+  // 🔥 OCULTAR PREVIEWCARTILLA
+  const preview = document.getElementById("previewCartilla");
+  preview.classList.add("hidden");
+  preview.innerHTML = ""; // limpia contenido
 
 }
 
 
+// 🔄 reiniciar
+function reiniciar(){
+  if(confirm("¿Reiniciar partida?")){
+    iniciarJuego();
+  }
+}
 
-// crear tablero visual
+
+// 🎲 automático
+function cantarNumero(){
+
+  if(modo === "manual"){
+    alert("Estás en modo manual");
+    return;
+  }
+
+  if(numeros.length === 0){
+    alert("Fin del juego");
+    return;
+  }
+
+  const big = document.getElementById("bigNumber");
+
+  let contador = 0;
+
+  big.classList.add("animando");
+
+  const anim = setInterval(()=>{
+
+    const random = Math.floor(Math.random()*75)+1;
+    big.innerText = random;
+
+    contador++;
+
+    if(contador > 15){
+
+      clearInterval(anim);
+
+      big.classList.remove("animando");
+
+      const index = Math.floor(Math.random() * numeros.length);
+      const num = numeros.splice(index,1)[0];
+
+      usados.push(num);
+
+      marcar(num);
+    }
+
+  }, 60);
+}
+
+
+// 🖐️ manual
+function clickBola(num){
+
+  if(modo !== "manual") return;
+
+  const index = usados.indexOf(num);
+  const bola = document.getElementById("bola-"+num);
+
+  // 🔁 SI YA ESTÁ MARCADO → DESMARCAR
+  if(index !== -1){
+
+    usados.splice(index,1); // quitar del array
+
+    if(bola){
+      bola.classList.remove("activo");
+    }
+
+    // opcional: limpiar número grande
+    document.getElementById("bigNumber").innerText = "--";
+
+    return;
+  }
+
+  // ✅ SI NO ESTÁ → MARCAR
+  usados.push(num);
+  marcar(num);
+}
+
+// 🔥 marcar número
+function marcar(num){
+
+  document.getElementById("bigNumber").innerText = num;
+
+  const bola = document.getElementById("bola-"+num);
+
+  if(bola){
+    bola.classList.add("activo");
+  }
+
+}
+
+// 🎱 crear tablero
 function crearTablero(){
 
-let tablero=document.getElementById("tablero");
+  const letras = {
+    B: [1,15],
+    I: [16,30],
+    N: [31,45],
+    G: [46,60],
+    O: [61,75]
+  };
 
-tablero.innerHTML="";
+  Object.keys(letras).forEach(l=>{
 
-// letras
-let letras=["B","I","N","G","O"];
+    const cont = document.getElementById("col-"+l);
+    cont.innerHTML = "";
 
-letras.forEach(l=>{
+    for(let i=letras[l][0]; i<=letras[l][1]; i++){
 
-let head=document.createElement("div");
+      const div = document.createElement("div");
 
-head.className="letra";
+      div.className = "bola";
+      div.id = "bola-"+i;
+      div.innerText = i;
 
-head.innerText=l;
+      div.onclick = ()=>clickBola(i);
 
-tablero.appendChild(head);
+      cont.appendChild(div);
+    }
 
-});
-
-// números
-for(let i=1;i<=75;i++){
-
-let cell=document.createElement("div");
-
-cell.className="bola";
-
-cell.id="n"+i;
-
-cell.innerText=i;
-
-tablero.appendChild(cell);
+  });
 
 }
 
-}
+// 🧾 verificador (valida codigo de cartilla)
+async function verificarCartilla(){
 
+  const codigo = document.getElementById("codigoCartilla").value.trim();
 
+  if(!codigo){
+    alert("Ingrese código");
+    return;
+  }
 
-// iniciar partida
-function iniciarPartida(){
+  try{
 
-numerosDisponibles=[];
+    const url = "https://script.google.com/macros/s/AKfycbwHMSoz1v8yzpkY-2W1IL8wNq-CFb_psYDib7nNkpQMUiXzsEH94xtUzx4SMGsfPxO_/exec" + "?codigo=" + codigo;
 
-numerosCantados=[];
+    const res = await fetch(url);
+    const data = await res.json();
 
-for(let i=1;i<=75;i++){
+    if(!data.encontrado){
+      alert("❌ Cartilla no encontrada");
+      return;
+    }
 
-numerosDisponibles.push(i);
+    const matriz = JSON.parse(data.cartilla);
 
-}
+    mostrarCartilla(matriz);
 
-crearTablero();
+    const resultado = verificarPatrones(matriz);
 
-document.getElementById("ultimoNumero").innerText="-";
+    if(resultado){
+      alert("🎉 GANADOR: " + resultado);
+    }else{
+      alert("❌ No cumple patrón ganador");
+    }
 
-}
-
-
-
-// cantar número aleatorio
-async function cantarNumero(){
-
-if(numerosDisponibles.length==0){
-
-alert("Ya no hay números");
-
-return;
-
-}
-
-// animación previa
-for(let i=0;i<15;i++){
-
-let fake=Math.floor(Math.random()*75)+1;
-
-mostrarUltimo(fake);
-
-await esperar(50);
-
-}
-
-// número real
-let index=Math.floor(Math.random()*numerosDisponibles.length);
-
-let numero=numerosDisponibles.splice(index,1)[0];
-
-numerosCantados.push(numero);
-
-marcarNumero(numero);
-
-mostrarUltimo(numero);
-
-}
-
-function marcarNumero(numero){
-
-document
-
-.getElementById("n"+numero)
-
-.classList.add("activo");
+  }catch(err){
+    console.error(err);
+    alert("Error al verificar");
+  }
 
 }
 
 
-function mostrarUltimo(numero){
+// 🧾 vizualiza la cartilla seleccionada
+function mostrarCartilla(matriz){
 
-let ultimo=document.getElementById("ultimoNumero");
+  const cont = document.getElementById("previewCartilla");
 
-ultimo.innerText=numero;
+  cont.classList.remove("hidden");
 
-ultimo.classList.add("animar");
+  let html = `
+    <div class="cartilla-preview">
+      <div class="cartilla-grid">
+        <div class="header-preview">B</div>
+        <div class="header-preview">I</div>
+        <div class="header-preview">N</div>
+        <div class="header-preview">G</div>
+        <div class="header-preview">O</div>
+  `;
 
-setTimeout(()=>{
+  matriz.forEach(fila=>{
+    fila.forEach(valor=>{
 
-ultimo.classList.remove("animar");
+      let activo = "";
 
-},300);
+      if(valor === "FREE" || usados.includes(valor)){
+        activo = "activo";
+      }
 
+      html += `<div class="cell-preview ${activo}">${valor}</div>`;
+    });
+  });
+
+  html += `</div></div>`;
+
+  cont.innerHTML = html;
 }
 
 
-function esperar(ms){
 
-return new Promise(r=>setTimeout(r,ms));
 
+
+// Detecta Patrones
+function verificarPatrones(m){
+
+  // convertir FREE a marcado
+  const check = m.map(fila =>
+    fila.map(v => v === "FREE" || usados.includes(v))
+  );
+
+  // 🔴 HORIZONTALES
+  for(let i=0;i<5;i++){
+    if(check[i].every(v=>v)) return "Línea horizontal";
+  }
+
+  // 🔵 VERTICALES
+  for(let j=0;j<5;j++){
+    if(check.every(f=>f[j])) return "Línea vertical";
+  }
+
+  // 🔶 DIAGONAL 1
+  if([0,1,2,3,4].every(i => check[i][i])){
+    return "Diagonal ↘";
+  }
+
+  // 🔶 DIAGONAL 2
+  if([0,1,2,3,4].every(i => check[i][4-i])){
+    return "Diagonal ↙";
+  }
+
+  return null;
 }
 
 
-// reiniciar
-function reiniciarNumeros(){
 
-numerosDisponibles=[];
+function limpiarVerificador(){
 
-numerosCantados=[];
+  // 🔥 limpiar input
+  document.getElementById("codigoCartilla").value = "";
 
-crearTablero();
-
-document.getElementById("ultimoNumero").innerText="-";
-
-}
-
-
-
-// crear tablero al cargar
-window.onload=crearTablero;
-
-
-//verificar ganador
-async function verificarGanador(){
-
-let codigo=document.getElementById("codigoGanador").value;
-
-let url=scriptURL+"?codigo="+codigo;
-
-let res=await fetch(url);
-
-let data=await res.json();
-
-if(!data.cartilla){
-
-alert("Código no encontrado");
-
-return;
-
-}
-
-let ganador=verificarBingo(data.cartilla);
-
-document.getElementById("resultadoVerificacion")
-
-.innerText=
-
-ganador
-
-? "🎉 BINGO válido"
-
-: "❌ No cumple patrón";
+  // 🔥 ocultar preview
+  const preview = document.getElementById("previewCartilla");
+  preview.classList.add("hidden");
+  preview.innerHTML = "";
 
 }
 
 
 
-//logica
-
-function verificarBingo(cartilla){
-
-// filas
-for(let r=0;r<5;r++){
-
-let ok=true;
-
-for(let c=0;c<5;c++){
-
-let n=cartilla[c][r];
-
-if(n!="FREE" && !numerosCantados.includes(n))
-
-ok=false;
-
-}
-
-if(ok) return true;
-
-}
-
-
-// columnas
-for(let c=0;c<5;c++){
-
-let ok=true;
-
-for(let r=0;r<5;r++){
-
-let n=cartilla[c][r];
-
-if(n!="FREE" && !numerosCantados.includes(n))
-
-ok=false;
-
-}
-
-if(ok) return true;
-
-}
-
-
-// diagonales
-
-let diag1=true;
-
-let diag2=true;
-
-for(let i=0;i<5;i++){
-
-if(cartilla[i][i]!="FREE" && !numerosCantados.includes(cartilla[i][i]))
-
-diag1=false;
-
-
-if(cartilla[i][4-i]!="FREE" && !numerosCantados.includes(cartilla[i][4-i]))
-
-diag2=false;
-
-}
-
-return diag1 || diag2;
-
-}
-
-//gurada data
-
-fetch(scriptURL,{
-method:"POST",
-body:JSON.stringify({
-nombre,
-partida,
-codigo,
-cartilla
-})
+// muestra el tablero
+document.addEventListener("DOMContentLoaded", () => {
+  crearTablero();
+  iniciarJuego(); // opcional pero recomendado
 });

@@ -39,19 +39,13 @@ height:auto;
 
 
 .message{
-
 font-size:15px;
-
 color:#e8d9a8;
-
 max-width:700px;
-
 margin:auto;
-
 margin-bottom:25px;
-
 line-height:1.6;
-
+text-align: center;
 }
 
 
@@ -429,7 +423,7 @@ box-shadow:0 0 10px gold;
 
 .bigNumber{
 
-font-size:70px;
+font-size:120px;
 
 font-weight:bold;
 

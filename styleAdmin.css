@@ -1,0 +1,121 @@
+.modo{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.radio-btn input{
+  display:none;
+}
+
+.radio-btn span{
+  padding:10px 18px;
+  border-radius:10px;
+  background:#222;
+  cursor:pointer;
+  border:1px solid #555;
+  transition:.2s;
+}
+
+/* 🔥 activo */
+.radio-btn input:checked + span{
+  background:linear-gradient(90deg,#d4af37,#ffd700);
+  color:black;
+  font-weight:bold;
+  box-shadow:0 0 10px gold;
+}
+
+.bingo-board{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  margin-top:25px;
+  flex-wrap:wrap;
+}
+
+.col{
+  text-align:center;
+}
+
+.col div{
+  display:grid;
+  gap:6px;
+}
+
+.verificador{
+  margin-top:25px;
+  text-align:center;
+}
+
+.verificador input{
+  max-width:250px;
+}
+
+.bigNumber{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+
+.controls{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:15px 0;
+  flex-wrap:wrap;
+}
+
+
+.animando{
+  animation:zoom 0.1s infinite alternate;
+}
+
+@keyframes zoom{
+  from{ transform:scale(1); }
+  to{ transform:scale(1.2); }
+}
+
+.letra{
+  margin-bottom: 10px;
+  font-size: 30px;
+}
+
+.preview{
+  margin-top:20px;
+  display:flex;
+  justify-content:center;
+}
+
+.cartilla-preview{
+  background:#111;
+  border:2px solid gold;
+  padding:15px;
+  border-radius:12px;
+}
+
+.cartilla-grid{
+  display:grid;
+  grid-template-columns:repeat(5,50px);
+  gap:5px;
+  text-align:center;
+}
+
+.cell-preview{
+  padding:10px;
+  background:#1a1a1a;
+  border:1px solid gold;
+  border-radius:6px;
+  font-weight:bold;
+}
+
+.cell-preview.activo{
+  background:gold;
+  color:black;
+}
+
+.header-preview{
+  background:gold;
+  color:black;
+}
