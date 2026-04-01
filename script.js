@@ -69,7 +69,7 @@ document.getElementById("numCards").value=1;
 document.getElementById("cards").innerHTML="";
 document.getElementById("paymentPanel").classList.add("hidden");
 
-// 🔥 REACTIVAR BOTÓN
+// 🔥 REACTIVAR BOTÓN AQUÍ
 const btn = document.getElementById("btnGenerar");
 btn.disabled = false;
 btn.innerText = "Ya pagué, generar cartillas";
@@ -81,10 +81,8 @@ btn.innerText = "Ya pagué, generar cartillas";
 
 function generarCartillas(btn){
 
-// evitar múltiples clics
 if(btn.disabled) return;
 
-// bloquear botón
 btn.disabled = true;
 btn.innerText = "Generando cartillas...";
 
@@ -92,55 +90,55 @@ document.getElementById("cards").innerHTML="";
 
 let nombre=document.getElementById("playerName").value;
 let cantidad=document.getElementById("numCards").value;
-
-for(let i=0;i<cantidad;i++){
-setTimeout(() => {
-    crearCartilla(nombre);
-  }, i * 500); // 🔥 delay de 0.5s entre envíos
-}
-
-// cambiar texto final
-btn.innerText="Cartillas generadas ✔";
-
-// 🔥 RESTAURAR BOTÓN AUTOMÁTICAMENTE
-setTimeout(() => {
-  btn.disabled = false;
-  btn.innerText = "Ya pagué, generar cartillas";
-}, cantidad * 500 + 1000);
-
-}
-
-
-
-
-function crearCartilla(nombre){
-
 let partida=obtenerPartidaActiva().id;
 
+let todasLasCartillas = [];
 
-let card=generarBingoUnico();
+for(let i=0;i<cantidad;i++){
+
+  let card = generarBingoUnico();
+  let code = generarCodigo(partida);
+
+  // 🔥 SOLO UI
+  crearCartillaVisual(nombre, partida, code, card);
+
+  // 🔥 SOLO DATA
+  todasLasCartillas.push({
+    nombre,
+    partida,
+    codigo: code,
+    cartilla: card,
+    estado: "PAGADO"
+  });
+
+}
+
+// 🔥 ENVÍO
+guardarTodas(todasLasCartillas);
+
+btn.innerText="Cartillas generadas ✔";
+
+}
 
 
-let code=generarCodigo(partida);
 
+
+
+
+
+
+function crearCartillaVisual(nombre, partida, code, card){
 
 let div=document.createElement("div");
-
 div.className="card";
-
 
 div.innerHTML=`
 
 <div class="mini-logo">
-<img src="img/pingogood.svg" alt="PINGOGoog">
+<img src="img/pingogood.svg">
 </div>
 
-<p class="tagline">
-
-play • win • enjoy
-
-</p>
-
+<p class="tagline">play • win • enjoy</p>
 
 <div class="grid">
 
@@ -150,63 +148,54 @@ play • win • enjoy
 <div class="cell header">G</div>
 <div class="cell header">O</div>
 
-
 ${generarCeldas(card)}
 
-
 </div>
-
 
 <div class="code">
-
 ⭐ Código: ${code} ⭐
-
 </div>
 
-
 <button onclick="descargar(this)">
-
 Descargar
-
 </button>
 
 `;
 
-
-document.getElementById("cards")
-
-.appendChild(div);
-
-
-guardar(nombre,partida,code,card);
+document.getElementById("cards").appendChild(div);
 
 }
 
 
 
-//envio de data 
-/* Error Fecth
+//envio de data modo de lista
 
-function guardar(nombre,partida,code,card){
+function guardarTodas(lista){
 
-const data = new URLSearchParams();
+const form = document.createElement("form");
 
-data.append("nombre", nombre);
-data.append("partida", partida);
-data.append("codigo", code);
-data.append("cartilla", JSON.stringify(card));
-data.append("estado", "PAGADO");
+form.method = "POST";
+form.action = scriptURL;
+form.target = "hidden_iframe";
 
-fetch(scriptURL, {
-method: "POST",
-body: data
-})
-.then(() => console.log("enviado"))
-.catch(err => console.error(err));
+const input = document.createElement("input");
+input.type = "hidden";
+input.name = "data";
+input.value = JSON.stringify(lista);
+
+form.appendChild(input);
+
+document.body.appendChild(form);
+form.submit();
+
+setTimeout(() => {
+  document.body.removeChild(form);
+}, 2000);
 
 }
 
- */
+
+/* funcion guardar antigua, luego quitar */
 
 function guardar(nombre,partida,code,card){
 
@@ -427,4 +416,34 @@ link.click();
 }
 
 
+function crearParticulas(){
+  const container = document.getElementById("particles");
+
+  for(let i=0;i<40;i++){
+    let p = document.createElement("div");
+    p.className="particle";
+
+    p.style.left = Math.random()*100 + "vw";
+    p.style.animationDuration = (6 + Math.random()*6) + "s";
+    p.style.opacity = Math.random();
+
+    container.appendChild(p);
+  }
+}
+
+// 🔥 SIEMPRE AL FINAL
+document.addEventListener("DOMContentLoaded", ()=>{
+
+  crearParticulas();
+
+  document.addEventListener("mousemove", (e)=>{
+
+    const x = (e.clientX / window.innerWidth - 0.5) * 10;
+    const y = (e.clientY / window.innerHeight - 0.5) * 10;
+
+    document.body.style.backgroundPosition = `${50 + x}% ${50 + y}%`;
+
+  });
+
+});
 
