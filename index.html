@@ -8,132 +8,71 @@
 
 <title>PINGOGoog</title>
 
-<link rel="stylesheet" href="style.css">
-
+<link rel="stylesheet" href="css/style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="script.js"></script>
+<script src="js/script.js"></script>
 </head>
-
-
 
 <body>
     
+    <div class="container">
 
+        <header>
+            <h1 class="logo">
+                <img src="img/pingogood.svg" alt="PINGOGoog">
+            </h1>
 
+            <p class="message">
+            ¡No solo miren el viaje, juéguenlo con nosotros! 🍱  
+            Adquieran su Bingo Oficial y pongan al Pelao en aprietos.⛩️💥
+            </p>
+        </header>
 
-<div class="container">
+        <div class="panel">
+            <div class="form-row">
+                <div class="field">
+                    <label>Nombre del jugador</label>
+                    <input type="text" id="playerName">
+                </div>
 
-<header>
+                <div class="field">
+                    <label>Cantidad de cartillas</label>
+                    <input type="number" id="numCards" value="1" min="1" max="50">
+                </div>
+            </div>
 
-<h1 class="logo">
-    <img src="img/pingogood.svg" alt="PINGOGoog">
-</h1>
+            <div class="buttons">
+                <button onclick="mostrarPago()">Generar</button>
+                <button onclick="limpiar()">Limpiar</button>
+            </div>
+        </div>
+        
+        <div id="paymentPanel" class="hidden">
 
-<p class="message">
-¡No solo miren el viaje, juéguenlo con nosotros! 🍱  
-Adquieran su Bingo Oficial y pongan al Pelao en aprietos.⛩️💥
-</p>
+            <h2>Pago por Yape</h2>
 
-</header>
+            <img src="assets/qr-yape.png" class="qr">
+            <p>Número Yape</p>
+            <h3>999 999 999</h3>
+            <p>Nombre</p>
+            <h3>TODO Good</h3>
+            <p>Monto a pagar</p>
 
+            <h2 id="montoTotal">S/ 0</h2>
 
+            <p id="detallePago"></p>
 
-<div class="panel">
+            <button id="btnGenerar" onclick="generarCartillas(this)">Ya pagué, generar cartillas</button>
+        </div>
 
-<div class="form-row">
+        <div id="cards"></div>
 
-<div class="field">
-    <label>Nombre del jugador</label>
-    <input type="text" id="playerName">
-</div>
+        <footer>
+            <p> © 2026 PINGOGoog  <br> Bingo Premium Online </p>
+        </footer>
+    </div>
 
-<div class="field">
-    <label>Cantidad de cartillas</label>
-    <input type="number" id="numCards" value="1" min="1" max="50">
-</div>
-
-</div>
-
-
-<div class="buttons">
-
-<button onclick="mostrarPago()">
-
-Generar
-
-</button>
-
-
-<button onclick="limpiar()">
-
-Limpiar
-
-</button>
-
-
-</div>
-
-</div>
-
-
-
-<div id="paymentPanel" class="hidden">
-
-<h2>Pago por Yape</h2>
-
-<img src="assets/qr-yape.png" class="qr">
-
-
-<p>Número Yape</p>
-<h3>999 999 999</h3>
-
-
-<p>Nombre</p>
-<h3>TODO Good</h3>
-
-
-<p>Monto a pagar</p>
-
-<h2 id="montoTotal">
-
-S/ 0
-
-</h2>
-
-
-<p id="detallePago"></p>
-
-
-<button id="btnGenerar" onclick="generarCartillas(this)">
-Ya pagué, generar cartillas
-</button>
-
-</div>
-
-
-
-<div id="cards"></div>
-
-
-
-<footer>
-
-<p>
-
-© 2026 PINGOGoog  
-<br>
-
-Bingo Premium Online
-
-</p>
-
-</footer>
-
-
-
-</div>
-
-<iframe name="hidden_iframe" style="display:none;"></iframe>
+    <iframe name="hidden_iframe" style="display:none;"></iframe>
 
 </body>
 

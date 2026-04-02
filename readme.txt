@@ -1,23 +1,23 @@
-# 🎱 PingoGood - Plataforma de Bingo Online
+# 🎱 PingoGood - Manual de Licencia y Configuración
 
-PingoGood es una solución integral de Bingo Digital diseñada para eventos en vivo y virtuales. Combina una interfaz de usuario intuitiva con un robusto panel de administración vinculado a Google Sheets para la gestión de datos en tiempo real.
+¡Gracias por adquirir PingoGood! Este paquete contiene el diseño y la lógica necesaria para operar tu propio Bingo Online.
 
-## 🚀 Características Principales
+## 📁 Contenido del Paquete
+* `index.html` / `admin.html`: Estructura web y panel de control.
+* `style.css` / `styleAdmin.css`: Diseño visual y adaptabilidad móvil.
+* `admin.js`: Lógica de juego, validación de patrones y conexión API.
+* `Codigo.gs`: Código fuente para Google Apps Script.
 
-### 👤 Experiencia del Usuario (Jugador)
-* **Personalización:** Los usuarios pueden ingresar su nombre y seleccionar la cantidad de cartillas deseadas.
-* **Pasarela de Pago Manual:** Integración visual con Yape; tras el pago, el usuario envía su comprobante y código por WhatsApp para validación.
-* **Generación Dinámica:** Sistema de creación de cartillas únicas descargables en formato digital.
+## 🛠️ Guía de Instalación Rápida
+1. **Google Sheets:** Crea una hoja nueva llamada `cartillas`.
+2. **Apps Script:** Desde la hoja, ve a "Extensiones" > "Apps Script" y pega el contenido de `Codigo.gs`.
+3. **Despliegue:** Implementa como "Aplicación Web" (Acceso: Cualquier persona).
+4. **Vinculación:** Copia la URL obtenida y pégala en la constante `API_URL` dentro de `admin.js`.
+5. **Hosting:** Sube los archivos HTML/CSS/JS a tu servidor preferido (GitHub Pages, Vercel, Hostinger, etc.).
 
-### 🔐 Panel Administrativo (Gestión Total)
-* **Seguridad:** Acceso restringido mediante clave de administrador y tokens de sesión temporales.
-* **Control de Partida:** * Modo **Manual**: El admin marca los números cantados físicamente.
-    * Modo **Automático**: El sistema genera y canta los números aleatoriamente con animaciones.
-* **Verificador de Ganadores:** Consulta instantánea mediante código de cartilla. El sistema cruza los números marcados con la matriz de la cartilla en la base de datos (Google Sheets).
-* **Visualización en Tiempo Real:** Renderizado visual de la cartilla consultada para confirmar patrones (Línea, Diagonal, etc.).
-
-## 🛠️ Stack Tecnológico
-* **Frontend:** HTML5, CSS3 (Diseño Responsivo), JavaScript Moderno.
-* **Backend:** Google Apps Script (GAS).
-* **Base de Datos:** Google Sheets (Persistencia de datos y auditoría).
-* **Seguridad:** CacheService para manejo de sesiones y validación de tokens.
+## ⚖️ Términos de Licencia y Propiedad Intelectual
+Al adquirir este software, usted acepta los siguientes términos:
+* **Uso Único:** Esta licencia otorga el derecho de uso para **una (1) sola plataforma/dominio web**.
+* **Prohibición de Reventa:** Queda estrictamente prohibida la redistribución, sublicencia o reventa del código fuente, diseño o lógica a terceros.
+* **Derechos de Autor:** La propiedad intelectual del diseño visual y la arquitectura del código pertenece exclusivamente al desarrollador original.
+* **Uso Comercial:** Usted tiene derecho a lucrar con los eventos realizados dentro de su instancia instalada.
