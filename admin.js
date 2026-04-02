@@ -1,3 +1,79 @@
+//Login Tokens
+const API_URL = "https://script.google.com/macros/s/AKfycbwHMSoz1v8yzpkY-2W1IL8wNq-CFb_psYDib7nNkpQMUiXzsEH94xtUzx4SMGsfPxO_/exec";
+
+async function login(){
+
+  const pass = document.getElementById("adminPass").value;
+  const error = document.getElementById("loginError");
+
+  error.innerText = "";
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      mode: "cors", // Importante
+      body: new URLSearchParams({
+        login: 1,
+        password: pass
+      })
+    });
+
+    const data = await res.json();
+
+    if(data.success){
+
+      localStorage.setItem("token", data.token);
+      mostrarPanel();
+
+    }else{
+      error.innerText = "Clave incorrecta";
+    }
+
+  }catch(e){
+    error.innerText = "Error de conexión";
+  }
+}
+
+
+// Validar Sesion al Ingresar
+document.addEventListener("DOMContentLoaded", ()=>{
+
+  const token = localStorage.getItem("token");
+
+  if(token){
+    mostrarPanel();
+    crearTablero();
+    iniciarJuego();
+  }else{
+    mostrarLogin();
+  }
+
+});
+
+// Mostrar - Ocultar
+function mostrarLogin(){
+  document.getElementById("loginScreen").style.display = "flex";
+  document.getElementById("adminPanel").style.display = "none";
+}
+
+
+// Logout
+function logout(){
+  localStorage.removeItem("token");
+  location.reload();
+}
+
+
+function mostrarPanel(){
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("adminPanel").style.display = "block";
+
+  crearTablero();
+  iniciarJuego();
+}
+
+
+// Variables
 let modo = "manual";
 let numeros = [];
 let usados = [];
@@ -170,22 +246,40 @@ async function verificarCartilla(){
 
   try{
 
-    const url = "https://script.google.com/macros/s/AKfycbwHMSoz1v8yzpkY-2W1IL8wNq-CFb_psYDib7nNkpQMUiXzsEH94xtUzx4SMGsfPxO_/exec" + "?codigo=" + codigo;
+    // 🔐 Tokens + Acceso
+    const token = localStorage.getItem("token");
 
-    const res = await fetch(url);
+    const url = "https://script.google.com/macros/s/AKfycbwHMSoz1v8yzpkY-2W1IL8wNq-CFb_psYDib7nNkpQMUiXzsEH94xtUzx4SMGsfPxO_/exec"
+      + "?codigo=" + codigo + "&token=" + token;
+
+    const res = await fetch(url, {
+      method: 'GET',
+      mode: 'cors',
+      redirect: 'follow' // Indispensable para Apps Script
+    });
     const data = await res.json();
+
+    // 🔥 SI NO AUTORIZADO
+    if(data.error){
+      alert("🔒 Sesión inválida, vuelve a iniciar sesión");
+      logout();
+      return;
+    }
 
     if(!data.encontrado){
       alert("❌ Cartilla no encontrada");
       return;
     }
 
+     // Validamos que exista la cartilla 
+    if(!data.cartilla) {
+      alert("❌ Error: Los datos de la cartilla están vacíos en Excel");
+      return;
+    }
     const matriz = JSON.parse(data.cartilla);
-
     mostrarCartilla(matriz);
 
     const resultado = verificarPatrones(matriz);
-
     if(resultado){
       alert("🎉 GANADOR: " + resultado);
     }else{
@@ -285,9 +379,3 @@ function limpiarVerificador(){
 }
 
 
-
-// muestra el tablero
-document.addEventListener("DOMContentLoaded", () => {
-  crearTablero();
-  iniciarJuego(); // opcional pero recomendado
-});

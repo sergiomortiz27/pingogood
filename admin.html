@@ -14,74 +14,110 @@
 
 <body>
 
-<div class="container">
+<!-- 🔐 LOGIN SCREEN -->
+<div id="loginScreen" class="login-screen">
 
-  <h1 style="text-align:center;">Panel Administrador</h1>
+  <div class="login-box">
 
-  <!-- 🔀 MODO -->
-  <div class="modo">
+    <h2>🔐 Panel Administrador</h2>
 
-  <label class="radio-btn">
-    <input type="radio" name="modo" value="manual" checked onchange="setModo('manual')">
-    <span>Manual</span>
-  </label>
+    <input 
+      type="password" 
+      id="adminPass" 
+      placeholder="Ingresa la clave"
+      onkeypress="if(event.key==='Enter') login()"
+    >
 
-  <label class="radio-btn">
-    <input type="radio" name="modo" value="auto" onchange="setModo('auto')">
-    <span>Automático</span>
-  </label>
+    <button onclick="login()">Ingresar</button>
+
+    <p id="loginError" class="error"></p>
+
+  </div>
 
 </div>
 
-  <!-- 🔢 NÚMERO ACTUAL -->
-  <div id="bigNumber" class="bigNumber">--</div>
+<!-- PANEL ADMIN  OCULTO/VISIBLE -->
+<div id="adminPanel" style="display:none;">
 
-  <!-- 🎛️ CONTROLES -->
-  <div class="controls">
-    <button onclick="iniciarJuego()">Iniciar</button>
-    <button onclick="cantarNumero()">Cantar número</button>
-    <button onclick="reiniciar()">Reiniciar</button>
-  </div>
+  <!-- WEB ADMIN -->
+  <div class="container">
 
-  <!-- 🎱 TABLERO -->
-  <div class="bingo-board">
-
-    <div class="col">
-      <div class="letra">P</div>
-      <div id="col-B"></div>
+    <!-- Logout -->
+    <div style="text-align:right;">
+      <button onclick="logout()" class="logout-btn">
+        Cerrar sesión
+      </button>
     </div>
 
-    <div class="col">
-      <div class="letra">I</div>
-      <div id="col-I"></div>
-    </div>
+    <!-- Title -->
+    <h1 style="text-align:center;">Panel Administrador</h1>
 
-    <div class="col">
-      <div class="letra">N</div>
-      <div id="col-N"></div>
-    </div>
+    <!-- 🔀 MODO -->
+    <div class="modo">
 
-    <div class="col">
-      <div class="letra">G</div>
-      <div id="col-G"></div>
-    </div>
+    <label class="radio-btn">
+      <input type="radio" name="modo" value="manual" checked onchange="setModo('manual')">
+      <span>Manual</span>
+    </label>
 
-    <div class="col">
-      <div class="letra">O</div>
-      <div id="col-O"></div>
-    </div>
+    <label class="radio-btn">
+      <input type="radio" name="modo" value="auto" onchange="setModo('auto')">
+      <span>Automático</span>
+    </label>
 
   </div>
 
-  <!-- 🧾 VERIFICADOR -->
-  <div class="verificador">
-    <input type="text" id="codigoCartilla" placeholder="Código de cartilla">
-    <button onclick="verificarCartilla()">Verificar ganador</button>
-    <button onclick="limpiarVerificador()">Limpiar</button>
-  </div>
+    <!-- 🔢 NÚMERO ACTUAL -->
+    <div id="bigNumber" class="bigNumber">--</div>
 
-  <!-- 🧾 VISUALIZAR CARTILLA -->
-  <div id="previewCartilla" class="preview hidden"></div>
+    <!-- 🎛️ CONTROLES -->
+    <div class="controls">
+      <button onclick="iniciarJuego()">Iniciar</button>
+      <button onclick="cantarNumero()">Cantar número</button>
+      <button onclick="reiniciar()">Reiniciar</button>
+    </div>
+
+    <!-- 🎱 TABLERO -->
+    <div class="bingo-board">
+
+      <div class="col">
+        <div class="letra">P</div>
+        <div id="col-B"></div>
+      </div>
+
+      <div class="col">
+        <div class="letra">I</div>
+        <div id="col-I"></div>
+      </div>
+
+      <div class="col">
+        <div class="letra">N</div>
+        <div id="col-N"></div>
+      </div>
+
+      <div class="col">
+        <div class="letra">G</div>
+        <div id="col-G"></div>
+      </div>
+
+      <div class="col">
+        <div class="letra">O</div>
+        <div id="col-O"></div>
+      </div>
+
+    </div>
+
+    <!-- 🧾 VERIFICADOR -->
+    <div class="verificador">
+      <input type="text" id="codigoCartilla" placeholder="Código de cartilla">
+      <button onclick="verificarCartilla()">Verificar ganador</button>
+      <button onclick="limpiarVerificador()">Limpiar</button>
+    </div>
+
+    <!-- 🧾 VISUALIZAR CARTILLA -->
+    <div id="previewCartilla" class="preview hidden"></div>
+
+  </div>
 
 </div>
 
