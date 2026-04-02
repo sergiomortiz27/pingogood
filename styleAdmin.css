@@ -32,6 +32,7 @@
   gap:15px;
   margin-top:25px;
   flex-wrap:wrap;
+  
 }
 
 .col{
@@ -40,7 +41,8 @@
 
 .col div{
   display:grid;
-  gap:6px;
+  grid-template-columns: 1fr;
+  gap:4px;
 }
 
 .verificador{
@@ -123,3 +125,24 @@
 .bola{
   cursor: pointer;
 }
+
+
+@media (max-width: 600px){
+
+  .bingo-board{
+    gap:0px;
+    flex-wrap: nowrap;
+  }
+
+  .bola{
+    padding:5px;
+    font-size:12px;
+  }
+
+  .letra{
+    font-size:18px;
+  }
+
+}
+
+
